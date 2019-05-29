@@ -4,17 +4,30 @@
 #include <stdint.h>
 
 // *** USER CONFIGURATION *** //
-#define SFQ_CONFIG_STORAGE_WIDTH_TYPE   uint8_t
-#define SFQ_CONFIG_STORAGE_LENGTH_TYPE  uint32_t
+#define SFQ_WIDTH_TYPE   uint8_t
+#define SFQ_LENGTH_TYPE  uint32_t
 
-typedef SFQ_CONFIG_STORAGE_WIDTH_TYPE   storage_width_t;
-typedef SFQ_CONFIG_STORAGE_LENGTH_TYPE  storage_length_t;
+// *** LIBRARY CODE *** //
 
 typedef struct{
     const void * storage;
-    const storage_width_t storage_width;
-    storage_length_t head;
-    storage_length_t tail;
+    const SFQ_WIDTH_TYPE storage_width;
+    SFQ_LENGTH_TYPE max_length;
+    SFQ_LENGTH_TYPE head;
+    SFQ_LENGTH_TYPE tail;
 } sfqueue_t;
+
+typedef enum{
+    SFQ_ERR_OK = 0U,
+    SFQ_ERR_FULL,
+    SFQ_ERR_EMPTY,
+    SFQ_ERR_ARG
+}sfqueue_err_t;
+
+sfqueue_t sfq_create_queue(const void* storage, SFQ_WIDTH_TYPE storage_width, SFQ_LENGTH_TYPE max_length);
+sfqueue_err_t sfq_check_queue(sfqueue_t* queue);
+sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item);
+sfqueue_err_t sfq_dequeue(sfqueue_t* queue, void* item);
+SFQ_LENGTH_TYPE sfq_remaining(sfqueue_t* queue);
 
 #endif // C_STATIC_FIFO_QUEUE_H
