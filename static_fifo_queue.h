@@ -10,9 +10,10 @@
 // *** LIBRARY CODE *** //
 
 typedef struct{
-    const void * storage;
-    const SFQ_WIDTH_TYPE storage_width;
+    void * storage;
+    SFQ_WIDTH_TYPE storage_width;
     SFQ_LENGTH_TYPE max_length;
+    SFQ_LENGTH_TYPE length;
     SFQ_LENGTH_TYPE head;
     SFQ_LENGTH_TYPE tail;
 } sfqueue_t;
@@ -25,7 +26,7 @@ typedef enum{
 }sfqueue_err_t;
 
 sfqueue_t sfq_create_queue(const void* storage, SFQ_WIDTH_TYPE storage_width, SFQ_LENGTH_TYPE max_length);
-sfqueue_err_t sfq_check_queue(sfqueue_t* queue);
+sfqueue_err_t sfq_check_queue(const sfqueue_t* queue);
 sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item);
 sfqueue_err_t sfq_dequeue(sfqueue_t* queue, void* item);
 SFQ_LENGTH_TYPE sfq_remaining(sfqueue_t* queue);
