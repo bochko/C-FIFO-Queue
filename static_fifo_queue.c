@@ -25,10 +25,10 @@ sfqueue_err_t sfq_check_queue(const sfqueue_t* queue)
     return ret;
 }
 
-sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item)
+sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* source)
 {
     sfqueue_err_t ret = SFQ_ERR_OK;
-    if((queue == NULL) || (item == NULL))
+    if((queue == NULL) || (source == NULL))
     {
         ret = SFQ_ERR_ARG;
     }
@@ -42,7 +42,7 @@ sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item)
         SFQ_WIDTH_TYPE storage_idx;
         for(storage_idx = 0U; storage_idx < queue->storage_width; storage_idx++)
         {
-            target[storage_idx] = ((uint8_t*)item)[storage_idx];
+            target[storage_idx] = ((uint8_t*)source)[storage_idx];
         }
         queue->length++;
         queue->tail++;
@@ -54,3 +54,31 @@ sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item)
     return ret;
 }
 
+sfqueue_err_t sfq_dequeue(sfqueue_t* queue, void* destination)
+{
+    sfqueue_err_t ret = SFQ_ERR_OK;
+    if((queue == NULL) || (destination == NULL))
+    {
+        ret = SFQ_ERR_ARG;
+    }
+    else if(queue->length == 0U)
+    {
+        ret = SFQ_ERR_EMPTY;
+    }
+    else
+    {
+        uint8_t* source = &(((uint8_t*)queue->storage)[queue->head * queue->storage_width]);
+        SFQ_WIDTH_TYPE storage_idx;
+        for(storage_idx = 0U; storage_idx < queue->storage_width; storage_idx++)
+        {
+            ((uint8_t*)destination)[storage_idx] = source[storage_idx];
+        }
+        queue->head++;
+        queue->length--;
+        if(queue->head >= queue->max_length)
+        {
+            queue->head = 0U;
+        }
+    }
+    return ret;
+}

@@ -27,8 +27,8 @@ typedef enum{
 
 sfqueue_t sfq_create_queue(const void* storage, SFQ_WIDTH_TYPE storage_width, SFQ_LENGTH_TYPE max_length);
 sfqueue_err_t sfq_check_queue(const sfqueue_t* queue);
-sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* item);
-sfqueue_err_t sfq_dequeue(sfqueue_t* queue, void* item);
+sfqueue_err_t sfq_enqueue(sfqueue_t* queue, void* source);
+sfqueue_err_t sfq_dequeue(sfqueue_t* queue, void* destination);
 SFQ_LENGTH_TYPE sfq_remaining(sfqueue_t* queue);
 
 #endif // C_STATIC_FIFO_QUEUE_H
