@@ -1,7 +1,6 @@
 #include "static_fifo_queue.h"
 
-#include <stdio.h>
+#include <stdint.h>
 
-void hello(void) {
-    printf("Hello, World!\n");
-}
+
+
